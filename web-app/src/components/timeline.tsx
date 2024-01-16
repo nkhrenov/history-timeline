@@ -1,20 +1,38 @@
 interface TimeScaleProps {
     startYear: number;
-    endYear: number;
+    scale: number;
+    maxSections: number;
+    events: TimelineEvent[];
 }
 
-const TimeScale = ({ startYear, endYear }: TimeScaleProps) => {
+const TimeScale = ({ startYear, scale, maxSections, events }: TimeScaleProps) => {
     const renderYears = (): JSX.Element[] => {
         const years: JSX.Element[] = [];
 
-        for (let year = startYear; year <= endYear; year++) {
-            years.push(<div className="flex-initial w-32" key={year}>{year}</div>);
+        for (let i = 0; i < maxSections; i++) {
+            years.push(<div className="w-36" key={i}>{startYear + i * scale}</div>);
         }
 
         return years;
     };
 
-    return <div className="time-scale flex flex-row">{renderYears()}</div>;
+    const renderPlaceHolders = (): JSX.Element[] => {
+        const divs: JSX.Element[] = [];
+
+        for (let i = 0; i < maxSections; i++) {
+            divs.push(<div className="w-36 h-36 bg-gray-500" key={i}></div>);
+        }
+
+        return divs;
+    };
+
+    return (
+        <div className="flex flex-col">
+            <div className="flex flex-row">{renderPlaceHolders()}</div>
+            <div className="flex flex-row">{renderYears()}</div>
+        </div>
+        
+    )
 };
 
 export default TimeScale;
